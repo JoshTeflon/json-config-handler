@@ -1,0 +1,17 @@
+:root {
+  --primary-color: #213f7d;
+  --secondary-color: #39cdcc;
+  --text-color: #545f7d;
+
+  font-family: 'Space Grotesk', sans-serif;
+  line-height: 1;
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--text-color);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}

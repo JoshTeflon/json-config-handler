@@ -1,0 +1,70 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Home styles */
+.home h2, .model-config h2 {
+  color: var(--primary-color);
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+}
+
+.home .decision__container {
+  display: flex;
+  flex-direction: column;
+  margin: 2rem 0;
+}
+
+.home .decision__container .decision__container--item {
+  display: flex;
+  flex-direction: column-reverse;
+  padding: 1rem;
+  border: 1px solid #213f7d0f;
+  box-shadow: 3px 5px 20px rgba(0, 0, 0, 0.04);
+}
+
+.home .decision__container .decision__container--btns {
+  display: flex;
+  align-self: flex-end;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.home .decision__container .decision__container--btns button:first-child {
+  color: var(--primary-color);
+}
+
+.home .decision__container .decision__container--btns button:last-child {
+  color: #eb2626;
+}
+
+/* Decision Model styles */
+.model-config .model-config-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+@media screen and (min-width: 48rem) {
+  /* Home */
+  .home .decision__container .decision__container--item {
+    flex-direction: row;
+    align-items: start;
+    justify-content: space-between;
+  }
+
+  .home .decision__container .decision__container--btns {
+    margin-bottom: 0;
+    align-self: flex-start;
+  }
+
+  /* Decision Model */
+  .model-config .model-config-inputs {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+}
