@@ -1,0 +1,40 @@
+.root {
+  width: 1rem;
+  height: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--text-color);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 120ms transform ease-in-out;
+}
+
+.input {
+  display: none
+}
+
+.root .checkIcon {
+  display: none
+}
+
+.input:checked ~ .root {
+  background: var(--secondary-color);
+  border: 1px solid var(--secondary-color);
+}
+
+.input:checked ~ .root .checkIcon {
+  display: block;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+}
+
+.label .labelText {
+  color: var(--text-color);
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-right: 0.5rem;
+}

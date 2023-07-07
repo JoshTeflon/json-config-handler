@@ -1,5 +1,4 @@
 .editorContainer {
-    border: 1px solid black;
-    width: 100%;
-    max-width: 40rem;
-  }
+  width: 100%;
+  max-width: 40rem;
+}

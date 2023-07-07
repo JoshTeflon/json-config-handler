@@ -1,13 +1,15 @@
 import React, { InputHTMLAttributes, ReactNode, forwardRef, useRef } from 'react'
 import { mergeRefs } from 'react-merge-refs'
-import './Input.module.css'
+import classnames from 'classnames'
+import i from './Input.module.css'
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string
   label?: string | ReactNode
   placeholder?: string
   type?: string
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  value?: string | number
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const Input: React.FC<InputProps> = forwardRef((props, ref) => {
@@ -15,6 +17,7 @@ const Input: React.FC<InputProps> = forwardRef((props, ref) => {
     className,
     label,
     placeholder,
+    value,
     onChange,
     type = 'text',
     ...rest
@@ -29,11 +32,12 @@ const Input: React.FC<InputProps> = forwardRef((props, ref) => {
   }
 
   return (
-    <label>
-      {label && <span>{label}</span>}
+    <label className={i.label}>
+      {label && <span>{label}:</span>}
         <input
-            className={className}
+            className={classnames(i.root, className)}
             placeholder={placeholder}
+            value={value}
             onChange={handleOnChange}
             type={type}
             autoComplete="on"
