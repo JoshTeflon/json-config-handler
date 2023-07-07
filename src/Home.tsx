@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from './components/interface'
 import { Delete, Edit } from './components/icons'
+import { apiBaseUrl } from './data/api'
 import { toast } from 'react-toastify'
 
 const Home: React.FC = () => {
@@ -12,7 +13,7 @@ const Home: React.FC = () => {
   const fetchModels = async () => {
     setLoading(true)
     try {
-      const response = await fetch('https://64a7b757dca581464b84a3cd.mockapi.io/api/v1/models');
+      const response = await fetch(apiBaseUrl);
       const data = await response.json();
       data && setModels(data)
       setLoading(false)
@@ -21,6 +22,24 @@ const Home: React.FC = () => {
       toast.error(`Error: ${error}`)
     }
   }
+
+  const deleteModel = async (id: string) => {
+    try {
+      const response = await fetch(`https://64a7b757dca581464b84a3cd.mockapi.io/api/v1/models/${id}`, {
+        method: 'DELETE',
+      })
+
+      if (response.ok) {
+        toast.success('Model deleted successfully🗑')
+        fetchModels()
+      } else {
+        toast.error('Error deleting model')
+      }
+    } catch (error) {
+      console.log('Error deleting model:', error)
+      toast.error(`Error: ${error}`)
+    }
+  };
 
   useEffect(() => {
     fetchModels()
@@ -44,7 +63,7 @@ const Home: React.FC = () => {
               return (
                 <div
                   className='decision__container--item'
-                  key={i.id}
+                  key={i.createdAt}
                 >
                   <div>
                     <h3 style={{ margin: '0 0 1rem 0' }}>{i.name}</h3>
@@ -57,6 +76,7 @@ const Home: React.FC = () => {
                     ><Edit /></Button>
                     <Button
                       variant='naked'
+                      onClick={() => deleteModel(i.id)}
                     ><Delete /></Button>
                   </div>
                 </div>

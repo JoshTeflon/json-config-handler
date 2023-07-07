@@ -4,6 +4,7 @@ import * as monaco from 'monaco-editor'
 import { toast } from 'react-toastify'
 import { Button, Checkbox, EditorView, Input } from './components/interface'
 import { defaultStr } from './data/default'
+import { apiBaseUrl } from './data/api'
 
 const DecisionModel: React.FC = () => {
   const [configName, setConfigName] = useState<string>('')
@@ -41,7 +42,7 @@ const DecisionModel: React.FC = () => {
   }
 
   const handleFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, checked, type } = event.target;
+    const { name, value, checked, type } = event.target
 
     const updatedFormData = { ...formData }
     const keys = name.split('.')
@@ -56,6 +57,25 @@ const DecisionModel: React.FC = () => {
 
     lastKey && (currentObject[lastKey] = type === 'checkbox' ? checked : type === 'number' ? +value : value)
 
+    let hasErrors = false
+
+    Object.keys(updatedFormData).forEach(key => {
+      const field = updatedFormData[key]
+      if (typeof field === 'object') {
+        Object.keys(field).forEach(subKey => {
+          const fieldValue = field[subKey];
+
+          if (subKey === 'provider' && fieldValue === '') {
+            hasErrors = true;
+          }
+          if ((subKey === 'minimum' || subKey === 'sequence') && (fieldValue <= 0 || fieldValue === '')) {
+            hasErrors = true;
+          }
+        })
+      }
+    })
+    setErrors(hasErrors)
+
     setFormData(updatedFormData)
   };
 
@@ -68,7 +88,7 @@ const DecisionModel: React.FC = () => {
         rules: formData
       }
 
-      const response = await fetch(`https://64a7b757dca581464b84a3cd.mockapi.io/api/v1/models/${location?.state?.id}`, {
+      const response = await fetch(`${apiBaseUrl}/${location?.state?.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -77,7 +97,7 @@ const DecisionModel: React.FC = () => {
       });
 
       if (response.ok) {
-        toast.success('Decision Model updated successfully')
+        toast.success('Decision Model updated successfully🎯')
         navigate('/')
       } else {
         toast.error('Error updating decision model')
@@ -99,7 +119,7 @@ const DecisionModel: React.FC = () => {
         rules: formData
       }
 
-      const response = await fetch('https://64a7b757dca581464b84a3cd.mockapi.io/api/v1/models', {
+      const response = await fetch(apiBaseUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -108,7 +128,7 @@ const DecisionModel: React.FC = () => {
       });
 
       if (response.ok) {
-        toast.success('Decision Model created successfully')
+        toast.success('Decision Model created successfully🚀')
         navigate('/')
       } else {
         toast.error('Error creating decision model')
@@ -153,6 +173,7 @@ const DecisionModel: React.FC = () => {
                   value={formData?.[key]?.minimum || ''}
                   onChange={handleFieldChange}
                 />
+                {(!formData?.[key]?.minimum || formData?.[key]?.minimum <= 0) && <span className='error-msg'>Enter a valid number</span>}
               </div>
             )}
             {provider !== undefined && (
@@ -163,6 +184,7 @@ const DecisionModel: React.FC = () => {
                   value={formData?.[key]?.provider || ''}
                   onChange={handleFieldChange}
                 />
+                {!formData?.[key]?.provider && <span className='error-msg'>This is required</span>}
               </div>
             )}
             {required !== undefined && (
@@ -184,6 +206,7 @@ const DecisionModel: React.FC = () => {
                   value={formData?.[key]?.sequence || ''}
                   onChange={handleFieldChange}
                 />
+                {(!formData?.[key]?.sequence || formData?.[key]?.sequence <= 0) && <span className='error-msg'>Enter a valid number</span>}
               </div>
             )}
             {continue_on_failure !== undefined && (

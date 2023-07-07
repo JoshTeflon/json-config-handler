@@ -1,0 +1,1 @@
+export const apiBaseUrl = 'https://64a7b757dca581464b84a3cd.mockapi.io/api/v1/models'
