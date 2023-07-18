@@ -17,6 +17,7 @@ const DecisionModel: React.FC = () => {
   const location = useLocation()
   const navigate = useNavigate()
 
+  
   useEffect(() => {
     const updatedConfigValue = JSON.stringify(formData, null, 2)
     setConfigValue(updatedConfigValue)
@@ -207,6 +208,10 @@ const DecisionModel: React.FC = () => {
                   onChange={handleFieldChange}
                 />
                 {(!formData?.[key]?.sequence || formData?.[key]?.sequence <= 0) && <span className='error-msg'>Enter a valid number</span>}
+                {
+                  (Object.keys(formData)?.filter(dataKey => formData[dataKey]?.sequence === formData?.[key]?.sequence)?.length > 1) &&
+                  <span className='error-msg'>Duplicate sequence value</span>
+                }
               </div>
             )}
             {continue_on_failure !== undefined && (
@@ -224,7 +229,7 @@ const DecisionModel: React.FC = () => {
       });
     } catch (error) {
       // Handle JSON parsing errors if needed
-      return null;
+      return <div className='error-msg'>Fields not generated</div>;
     }
   }
 
